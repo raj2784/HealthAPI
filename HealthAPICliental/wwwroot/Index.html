@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>HealthAPI-Client</title>
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <h3> Cors Request</h3>
+    <button id="btnGetPatients">Get All Patients</button><br /><br />
+    <pre id="preOutput"></pre>
+
+    Please Enter Patient Id: <input id="txtPatientsId" type="text" style="width:100px" />
+    <button id="btnGetPatientbyId">Get Patient by Id</button><br /><br />
+    <pre id="preOutput1"></pre>
+
+    Please Enter Patient Id: <input id="txtPatientsId2" type="text" style="width:100px" />
+    <button id="btnDeletePatient">Delete Patient</button>
+    <pre id="preOutput2"></pre>
+
+    <script>
+        $(function () {
+            var getPatients = function () {
+                var url = "https://localhost:44318/api/patients";
+                $.get(url).always(showResponse);
+                return false;
+            };
+
+            var showResponse = function (object) {
+                $("#preOutput").text(JSON.stringify(object, null, 4));
+            };
+
+            $("#btnGetPatients").click(getPatients);
+        });
+
+        //Retrive Patient by Id
+        $(function () {
+            //var Pid = $("#txtPatientsId").val();
+            var getPatientbyId = function () {
+                var url = "https://localhost:44318/api/patients/getPatientbyId?id=" + $("#txtPatientsId").val();
+                $.get(url).always(showResponse);
+                return false;
+            };
+
+            var showResponse = function (object) {
+                $("#preOutput1").text(JSON.stringify(object, null, 4));
+            };
+
+            $("#btnGetPatientbyId").click(getPatientbyId);
+        });
+
+        //Delete Patient by Id
+        $(document).ready(function () {
+            //var Pid = $("#txtPatientsId").val();
+            $("#btnDeletePatient").click(function () {
+                confirm("Are you sure want to delete this record!")
+                fetch("https://localhost:44318/api/Patients/deletePatientbyId?id=" + $("#txtPatientsId2").val(), {
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(result => {
+                    return result.json();
+                });
+                alert("Data Deleted Successfully!")
+
+            });
+        });
+
+    </script>
+
+    <!--<div style="font-family:Arial">
+    //    ID : <input id="txtId" type="text" style="width:100px" />
+    //    <input type="button" id="btnGetPatientbyId" value="Get Patient By Id" />
+    //    <br /><br />
+    //    <table border="1" style="border-collapse:collapse">
+    //        <tr>
+    //            <td>
+    //                Patient Name
+    //            </td>
+    //            <td><input id="txtPatientName" type="text" /></td>
+    //        </tr>
+    //        <tr>
+    //            <td>
+    //                Ailments
+    //            </td>
+    //            <td><input id="txtPatientAilmets" type="text" /></td>
+    //        </tr>
+    //        <tr>
+    //            <td>
+    //                Medications
+    //            </td>
+    //            <td><input id="txtPatientMedication" type="text" /></td>
+    //        </tr>
+    //    </table>
+    //</div>-->
+</body>
+</html>
