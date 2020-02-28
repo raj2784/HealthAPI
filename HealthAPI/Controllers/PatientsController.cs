@@ -82,13 +82,13 @@ namespace HealthAPI.Controllers
         }
 
         // POST: api/Patients
-        [HttpPost]
-        public async Task<ActionResult<Patient>> PostPatient(Patient patient)
+        [HttpPost("addnewpatient")]
+        public IActionResult PostPatient(Patient patient)
         {
             _context.Patients.Add(patient);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
-            return CreatedAtAction("GetPatient", new { id = patient.PatientId }, patient);
+            return Ok(patient);
         }
 
         // DELETE: api/Patients/5

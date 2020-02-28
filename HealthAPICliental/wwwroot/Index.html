@@ -15,84 +15,94 @@
     <pre id="preOutput1"></pre>
 
     Please Enter Patient Id: <input id="txtPatientsId2" type="text" style="width:100px" />
-    <button id="btnDeletePatient">Delete Patient</button>
+    <button id="btnDeletePatient">Delete Patient</button><br /><br /><br />
+
+    Add New Patient : <input id="txtPatientsId3" type="text" style="width:100px" />
+    <button id="btnAddPatient">Add New Patient</button>
+    <ul id="patients"></ul>
+
     <pre id="preOutput2"></pre>
 
     <script>
-        $(function () {
-            var getPatients = function () {
-                var url = "https://localhost:44318/api/patients";
-                $.get(url).always(showResponse);
-                return false;
-            };
-
-            var showResponse = function (object) {
-                $("#preOutput").text(JSON.stringify(object, null, 4));
-            };
-
-            $("#btnGetPatients").click(getPatients);
-        });
-
-        //Retrive Patient by Id
-        $(function () {
-            //var Pid = $("#txtPatientsId").val();
-            var getPatientbyId = function () {
-                var url = "https://localhost:44318/api/patients/getPatientbyId?id=" + $("#txtPatientsId").val();
-                $.get(url).always(showResponse);
-                return false;
-            };
-
-            var showResponse = function (object) {
-                $("#preOutput1").text(JSON.stringify(object, null, 4));
-            };
-
-            $("#btnGetPatientbyId").click(getPatientbyId);
-        });
-
-        //Delete Patient by Id
         $(document).ready(function () {
-            //var Pid = $("#txtPatientsId").val();
+            // Retrive all patient
+            $(function () {
+                var getPatients = function () {
+                    var url = "https://localhost:44318/api/patients";
+                    $.get(url).always(showResponse);
+                    return false;
+                };
+
+                var showResponse = function (object) {
+                    $("#preOutput").text(JSON.stringify(object, null, 4));
+                };
+
+                $("#btnGetPatients").click(getPatients);
+            });
+
+            //Retrive Patient by Id
+            $(function () {
+                //var Pid = $("#txtPatientsId").val();
+                var getPatientbyId = function () {
+                    var url = "https://localhost:44318/api/patients/getPatientbyId?id=" + $("#txtPatientsId").val();
+                    $.get(url).always(showResponse);
+                    return false;
+                };
+
+                var showResponse = function (object) {
+                    $("#preOutput1").text(JSON.stringify(object, null, 4));
+                };
+
+                $("#btnGetPatientbyId").click(getPatientbyId);
+            });
+
+            //Delete Patient by Id
             $("#btnDeletePatient").click(function () {
+                //var patient = $("#txtPatientsId2").val();
                 confirm("Are you sure want to delete this record!")
-                fetch("https://localhost:44318/api/Patients/deletePatientbyId?id=" + $("#txtPatientsId2").val(), {
-                    method: "DELETE",
-                    headers: {
-                        'Content-Type': 'application/json'
+                debugger;
+                $.ajax({
+                    url: 'https://localhost:44318/api/Patients/deletePatientbyId?id=' + $("#txtPatientsId2").val(),
+                    type: 'DELETE',
+                    contentType: "application/json;charset=utf-8",
+                    success: function (data) {
+                        alert('Patient Deleted Successfully');
+                    },
+                    error: function () {
+                        alert('Some Error ouccured!');
                     }
-                }).then(result => {
-                    return result.json();
+
                 });
-                alert("Data Deleted Successfully!")
 
             });
+            // Add New Patient
+            $("#btnAddPatient").click(function () {
+
+                var patient = $("#txtPatientsId3").val();
+
+                debugger;
+                $.ajax({
+                    url: 'https://localhost:44318/api/patients/addnewpatient?patient=' + patient,
+                    type: 'POST',
+                    data: JSON.stringify(patient),
+                    contentType: "application/json;charset=utf-8",
+                    success: function (data) {
+                        alert('Patient added Successfully');
+                        GetPatients();
+                    },
+                    error: function () {
+                        alert('Some Error ouccured!');
+                    }
+
+                });
+
+            });
+
         });
+
 
     </script>
 
-    <!--<div style="font-family:Arial">
-    //    ID : <input id="txtId" type="text" style="width:100px" />
-    //    <input type="button" id="btnGetPatientbyId" value="Get Patient By Id" />
-    //    <br /><br />
-    //    <table border="1" style="border-collapse:collapse">
-    //        <tr>
-    //            <td>
-    //                Patient Name
-    //            </td>
-    //            <td><input id="txtPatientName" type="text" /></td>
-    //        </tr>
-    //        <tr>
-    //            <td>
-    //                Ailments
-    //            </td>
-    //            <td><input id="txtPatientAilmets" type="text" /></td>
-    //        </tr>
-    //        <tr>
-    //            <td>
-    //                Medications
-    //            </td>
-    //            <td><input id="txtPatientMedication" type="text" /></td>
-    //        </tr>
-    //    </table>
-    //</div>-->
+
 </body>
 </html>
