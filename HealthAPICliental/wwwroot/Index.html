@@ -78,13 +78,15 @@
             // Add New Patient
             $("#btnAddPatient").click(function () {
 
-                var patient = $("#txtPatientsId3").val();
+                $("#txtPatientsId3").focus(function () {
+                    $(this).val('');
+                });
 
                 debugger;
                 $.ajax({
-                    url: 'https://localhost:44318/api/patients/addnewpatient?patient=' + patient,
+                    url: 'https://localhost:44318/api/patients/addnewpatient',
                     type: 'POST',
-                    data: JSON.stringify(patient),
+                    data: JSON.stringify({ "name": $("#txtPatientsId3").val() }),
                     contentType: "application/json;charset=utf-8",
                     success: function (data) {
                         alert('Patient added Successfully');
@@ -99,8 +101,6 @@
             });
 
         });
-
-
     </script>
 
 
