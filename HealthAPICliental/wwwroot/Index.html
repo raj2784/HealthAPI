@@ -54,12 +54,24 @@
                 };
 
                 $("#btnGetPatientbyId").click(getPatientbyId);
+
+                $("#txtPatientsId").focus(function () {
+                    $(this).val('');
+                });
+
+
             });
 
             //Delete Patient by Id
             $("#btnDeletePatient").click(function () {
                 //var patient = $("#txtPatientsId2").val();
+
                 confirm("Are you sure want to delete this record!")
+
+                $("#txtPatientsId2").focus(function () {
+                    $(this).val('');
+                });
+
                 debugger;
                 $.ajax({
                     url: 'https://localhost:44318/api/Patients/deletePatientbyId?id=' + $("#txtPatientsId2").val(),
